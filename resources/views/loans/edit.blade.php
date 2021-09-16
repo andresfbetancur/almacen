@@ -43,7 +43,7 @@
                         
                     </div>
                     <div class=" text-center col-12">
-                        <a href="{{route("loans.index")}}" class="btn btn-dark">Atrás</a>
+                        <a href="{{route("loans.detail")}}" class="btn btn-dark">Atrás</a>
                         <button type="submit" class="btn btn-primary">Actualizar!</button>
                     </div>
                 </form>

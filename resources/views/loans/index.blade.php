@@ -24,24 +24,10 @@
                                         <h5 class="card-title">{{$i->nombre}}</h5>
                                     @endif
                                     @endforeach
-                                    @if ($l->is_active == 1)
-                                        <p class="card-text" style="color: rgb(5, 168, 14)"><strong>Activo</strong></p>
-                                    @else
-                                        <p class="card-text" style="color: red"><strong>Inactivo</strong></p>
-                                    @endif
 
                                     <div class="row">
                                         <div class="col-4">
-                                            <a href="{{route('loans.edit', $l->id)}}"  class="btn btn-outline-primary">Editar</a>
-                                        </div>
-                                        <div class="col-4 ml-2">
-                                            <form action="{{route('loans.destroy',$l->id)}}" method="post">
-                                                {!! method_field('DELETE') !!}
-                                                {!! csrf_field() !!}
-                                                <button type="submit" style="right: 50px; position: relative;" class="btn btn-outline-danger">
-                                                    <a>Eliminar</a>
-                                                </button>
-                                            </form>
+                                            <a href="{{route('loans.show', $l->id_instructors)}}" class="btn btn-outline-primary">Detalle</a>
                                         </div>
                                     </div>
                                     

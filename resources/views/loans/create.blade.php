@@ -19,7 +19,7 @@
                         </div>
                         <div class="col">
                             <label class="form-label"><strong>Placa del Equipo</strong></label>
-                            <select name="id_laptops" class="form-control form-select">
+                            <select name="id_laptops[]" multiple='multiple' id="id_laptops" class="form-control form-select id_laptops">
                                 <option value="..." disabled selected>Seleccione la placa sena</option>
                                 @foreach ($laptops as $l)
                                     <option value="{{$l->id}}">{{$l->placa}}</option>
@@ -35,4 +35,16 @@
             </div>
         </div>
     </div>
+
+    <script>
+        jQuery(document).ready(function($){
+            $(document).ready(function() {
+                $('.id_laptops').select2();
+            });
+        });
+    </script>
+
+
 @endsection
+
+
