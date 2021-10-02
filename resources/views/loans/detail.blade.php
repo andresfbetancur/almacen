@@ -6,8 +6,10 @@
         <div class="row">
             <div class="col">
                 <br>
-                <h2 class="text-center"><a href="{{ route('loans.create') }}" style="right: 360px; position: relative;"
-                        class="btn btn-outline-success">+ Agregar</a><strong> Préstamos de Equipos</strong></h2><br>
+                <h2 class="text-center"><a href="{{ route('loans.create') }}" style="right: 320px; position: relative;"
+                        class="btn btn-outline-success">+ Agregar</a><strong> Préstamos de Equipos</strong> 
+                        <a href="{{route('loans.index')}}" class="btn btn-outline-primary" style="left: 320px; position: relative;">Atrás</a>
+                    </h2><br>
                 @foreach ($name_instructor as $ni)
                     <h4 class="text-center">{{ $ni->nombre }}</h4>
                 @endforeach
@@ -48,7 +50,6 @@
                                             </form>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>

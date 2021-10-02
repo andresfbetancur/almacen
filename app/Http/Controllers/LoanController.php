@@ -17,10 +17,18 @@ class LoanController extends Controller
      */
     public function index()
     {
-        $loans = DB::table('loans')->get();
-        $instructors = DB::table('instructors')->get();
-        $laptops = DB::table('laptops')->get();
-        return view("loans.index", ['loans'=>$loans, 'instructors'=>$instructors , 'laptops'=>$laptops]);
+        $loans = DB::select("SELECT 
+            loans.id AS identification_loan, 
+            loans.is_active, 
+            loans.novedad, 
+            loans.descripcion, 
+            loans.created_at AS date_loan, 
+            instructors.* 
+        FROM loans INNER JOIN instructors ON loans.id_instructors = instructors.id
+        where loans.created_at = loans.created_at");
+        // $instructors = DB::table('instructors')->get();
+        // $laptops = DB::table('laptops')->get();
+        return view("loans.index", ['loans' => $loans]);
         // $loans = Loan::orderBy('id', 'desc')->paginate(5);
         // return view("loans.index", compact("loans"));
     }
@@ -35,7 +43,7 @@ class LoanController extends Controller
 
         $instructors = DB::table('instructors')->get();
         $laptops = Laptop::orderBy('placa', 'asc')->get();
-        return view("loans.create", ['laptops'=>$laptops, 'instructors'=>$instructors]);
+        return view("loans.create", ['laptops' => $laptops, 'instructors' => $instructors]);
     }
 
     /**
@@ -47,7 +55,7 @@ class LoanController extends Controller
     public function store(Request $request)
     {
         // dd($request->input('id_laptops'));
- 
+
 
         foreach ($request->input('id_laptops') as $laptop) {
 
@@ -60,7 +68,6 @@ class LoanController extends Controller
             $loans->id_instructors = $request->input('id_instructors');
 
             $loans->save();
-
         }
 
 
@@ -75,7 +82,7 @@ class LoanController extends Controller
      */
     public function show($id)
     {
-        $loans = DB::select("SELECT laptops.placa, laptops.serial, loans.id, loans.is_active FROM loans
+        $loans = DB::select("SELECT laptops.placa, laptops.serial, loans.id, loans.is_active, loans.id_instructors FROM loans
                                     INNER JOIN instructors ON instructors.id = loans.id_instructors
                                     INNER JOIN laptops ON laptops.id = loans.id_laptops 
                                     WHERE loans.id_instructors = $id ");
@@ -85,8 +92,8 @@ class LoanController extends Controller
                                         WHERE instructors.id = $id ");
 
 
-        return view("loans.detail", ['loans'=>$loans, 'name_instructor'=>$name_instructor]);
-    } 
+        return view("loans.detail", ['loans' => $loans, 'name_instructor' => $name_instructor, 'id' => $id]);
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -99,7 +106,12 @@ class LoanController extends Controller
         $loans = \App\Loan::findOrFail($id);
         $laptops = DB::table('laptops')->get();
         $instructors = DB::table('instructors')->get();
-        return view("loans.edit", ['laptops'=>$laptops, 'loans'=>$loans,  'instructors'=>$instructors]);
+        // foreach ($instructors as $i) {
+        //     if ($loans->id_instructors == $i->id ){
+        //         $
+        //     }
+        // }
+        return view("loans.edit", ['laptops' => $laptops, 'loans' => $loans,  'instructors' => $instructors]);
     }
 
     /**
@@ -115,16 +127,28 @@ class LoanController extends Controller
         $is_active = $request->input('is_active');
         if ($is_active == null) {
             $loans->is_active = 0;
-        }else{
+        } else {
             $loans->is_active = $request->input('is_active');
         }
-
-        $id_instructors = $id;
         $loans->descripcion = $request->input('descripcion');
 
         $loans->update();
+        $loans = \App\Loan::findOrFail($id);
+        $loans = DB::select("SELECT laptops.placa, laptops.serial, loans.id, loans.is_active, loans.id_instructors FROM loans
+                                    INNER JOIN instructors ON instructors.id = loans.id_instructors
+                                    INNER JOIN laptops ON laptops.id = loans.id_laptops 
+                                    WHERE loans.id_instructors = $id ");
 
-        return view("loans.detail", ['id_instructors'=>$id_instructors]);
+
+        // $id_instructors = $id;
+        $name_instructor = DB::select("SELECT instructors.nombre FROM instructors
+                                        WHERE instructors.id = $id ");
+
+
+        return view("loans.detail", ['loans' => $loans, 'name_instructor' => $name_instructor, 'id' => $id]);
+
+        // return view("loans.detail", ['loans'=>$loans, 'id_instructors'=>$id_instructors]);
+        // return redirect()->back()->with(['id_instructors'=>$id_instructors]);
         // return redirect()->route('loans.detail');]
     }
 

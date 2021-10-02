@@ -43,8 +43,8 @@
                         
                     </div>
                     <div class=" text-center col-12">
-                        <a href="{{route("loans.detail")}}" class="btn btn-dark">Atrás</a>
-                        <button type="submit" class="btn btn-primary">Actualizar!</button>
+                            <a href="{{route('loans.show', $loans->id_instructors)}}" class="btn btn-outline-primary">Atrás</a>
+                            <button type="submit" class="btn btn-primary">Actualizar!</button>
                     </div>
                 </form>
             </div>
